@@ -4,7 +4,7 @@ self.addEventListener('push', event => {
         body: 'Нажмите, чтобы получить ваш код',
         icon: 'https://cahhek.github.io/weef323423f/unnamed.jpg',
         data: {
-            url: 'https://cahhek.github.io/weef323423f/codes.html'
+            url: 'https://cahhek.github.io/weef323423f/'
         }
     });
 });
