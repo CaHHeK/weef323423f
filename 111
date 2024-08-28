@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Test</title>
+    <script>
+        function requestNotificationPermission() {
+            if (Notification.permission === 'default') {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        alert('Notification permission granted.');
+                    } else {
+                        alert('Notification permission denied.');
+                    }
+                });
+            }
+        }
+
+        function sendTestNotification() {
+            if (Notification.permission === 'granted') {
+                new Notification("Test Notification", {
+                    body: "This is a test notification.",
+                    icon: "https://yourdomain.com/icon.png"
+                });
+            } else {
+                alert('Notification permission is not granted.');
+            }
+        }
+    </script>
+</head>
+<body>
+    <button onclick="requestNotificationPermission()">Request Notification Permission</button>
+    <button onclick="sendTestNotification()">Send Test Notification</button>
+</body>
+</html>
