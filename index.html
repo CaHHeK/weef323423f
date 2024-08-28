@@ -34,6 +34,7 @@
         const storageKey = 'savedCodes';
         let codes = [];
 
+        // Регистрация Service Worker
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/weef323423f/sw.js').then(reg => {
                 console.log('Service Worker зарегистрирован:', reg);
@@ -42,6 +43,7 @@
             });
         }
 
+        // Загрузка кодов из localStorage
         function loadCodes() {
             const savedCodes = localStorage.getItem(storageKey);
             if (savedCodes) {
@@ -49,10 +51,12 @@
             }
         }
 
+        // Сохранение кодов в localStorage
         function saveCodes() {
             localStorage.setItem(storageKey, JSON.stringify(codes));
         }
 
+        // Отображение кодов на странице
         function renderCodes() {
             const container = document.getElementById('codesContainer');
             container.innerHTML = '';
@@ -60,11 +64,12 @@
                 const codeDiv = document.createElement('div');
                 codeDiv.className = 'code';
                 codeDiv.innerText = code;
-                codeDiv.onclick = () => copyToClipboard(code, index);
+                codeDiv.onclick = () => handleCodeClick(code, index);
                 container.appendChild(codeDiv);
             });
         }
 
+        // Добавление новых кодов
         function addNewCodes() {
             const newCodes = document.getElementById('newCodesInput').value.split('\n');
             newCodes.forEach(code => {
@@ -78,12 +83,40 @@
             document.getElementById('newCodesInput').value = '';
         }
 
+        // Очистка всех кодов
         function clearCodes() {
             codes = [];
             saveCodes();
             renderCodes();
         }
 
+        // Обработка клика по коду
+        function handleCodeClick(code, index) {
+            copyToClipboard(code);
+            codes.splice(index, 1);  // Удаление кода из массива
+            saveCodes();  // Сохранение обновленного массива
+            renderCodes();  // Перерисовка кодов
+            openTelegramBot();  // Открытие Telegram-бота
+        }
+
+        // Копирование текста в буфер обмена
+        function copyToClipboard(text) {
+            const tempInput = document.createElement("input");
+            tempInput.style.position = "absolute";
+            tempInput.style.left = "-9999px";
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+        }
+
+        // Открытие Telegram-бота
+        function openTelegramBot() {
+            window.location.href = 'https://t.me/hamsTer_kombat_bot/start';
+        }
+
+        // Отправка тестового уведомления
         function sendNotification() {
             if (codes.length === 0) return;
 
@@ -93,13 +126,14 @@
                         body: 'Нажмите, чтобы получить ваш код',
                         icon: 'https://cahhek.github.io/weef323423f/unnamed.jpg',
                         data: {
-                            url: 'https://cahhek.github.io/weef323423f/codes.html'
+                            url: 'https://cahhek.github.io/weef323423f/'  // URL главной страницы
                         }
                     });
                 });
             }
         }
 
+        // Установка случайного интервала для уведомлений
         function scheduleNextNotification() {
             const min = 15 * 1000; // 15 секунд
             const max = 30 * 1000; // 30 секунд
@@ -111,6 +145,7 @@
             }, timeout);
         }
 
+        // Проверка разрешения на уведомления и запуск расписания
         if ("Notification" in window) {
             Notification.requestPermission().then(permission => {
                 if (permission === "granted") {
@@ -119,6 +154,7 @@
             });
         }
 
+        // Загрузка и отображение кодов при загрузке страницы
         loadCodes();
         renderCodes();
     </script>
