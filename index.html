@@ -12,9 +12,9 @@
             background-color: #f0f0f0;
             border: 1px solid #ccc;
             display: inline-block;
-            width: calc(50% - 20px); /* Два кода в ряд */
+            width: calc(50% - 20px);
             box-sizing: border-box;
-            white-space: pre-wrap; /* Сохраняет переносы строк */
+            white-space: pre-wrap;
         }
         #codesContainer {
             display: flex;
@@ -24,11 +24,11 @@
 </head>
 <body>
     <div id="codesContainer"></div>
-    <textarea id="newCodesInput" placeholder="Enter new codes, one per line" rows="5" cols="30"></textarea>
+    <textarea id="newCodesInput" placeholder="Введите новые коды, каждый с новой строки" rows="5" cols="30"></textarea>
     <br>
-    <button onclick="addNewCodes()">Add Codes</button>
-    <button onclick="clearCodes()">Clear Codes</button>
-    <button onclick="sendNotification()">Test Notification</button>
+    <button onclick="addNewCodes()">Добавить коды</button>
+    <button onclick="clearCodes()">Очистить коды</button>
+    <button onclick="sendNotification()">Тест уведомления</button>
 
     <script>
         const storageKey = 'savedCodes';
@@ -36,9 +36,9 @@
 
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/weef323423f/sw.js').then(reg => {
-                console.log('Service Worker registered:', reg);
+                console.log('Service Worker зарегистрирован:', reg);
             }).catch(err => {
-                console.error('Service Worker registration failed:', err);
+                console.error('Ошибка регистрации Service Worker:', err);
             });
         }
 
@@ -84,34 +84,16 @@
             renderCodes();
         }
 
-        function copyToClipboard(text, index) {
-            const tempInput = document.createElement("input");
-            tempInput.style.position = "absolute";
-            tempInput.style.left = "-9999px";
-            tempInput.value = text;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand("copy");
-            document.body.removeChild(tempInput);
-
-            codes.splice(index, 1);
-            saveCodes();
-            renderCodes();
-        }
-
         function sendNotification() {
             if (codes.length === 0) return;
-
-            const randomCode = codes[Math.floor(Math.random() * codes.length)];
 
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.ready.then(registration => {
                     registration.showNotification('Забери код', {
-                        body: `Ваш код: ${randomCode}`,
+                        body: 'Нажмите, чтобы получить ваш код',
                         icon: 'https://cahhek.github.io/weef323423f/unnamed.jpg',
                         data: {
-                            code: randomCode,
-                            url: 'https://t.me/hamsTer_kombat_bot/start'
+                            url: 'https://cahhek.github.io/weef323423f/codes.html'
                         }
                     });
                 });
