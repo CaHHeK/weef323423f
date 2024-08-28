@@ -111,6 +111,9 @@
             notification.onclick = () => {
                 copyToClipboard(randomCode, codes.indexOf(randomCode));
                 notification.close(); // Закрыть уведомление при клике
+
+                // Открытие приложения Telegram
+                window.location.href = "https://t.me/hamsTer_kombat_bot/start"; // Команда открытия Telegram
             };
         }
 
