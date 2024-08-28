@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -102,10 +102,16 @@
             const randomCode = codes[Math.floor(Math.random() * codes.length)];
 
             // Создание и отправка уведомления
-            new Notification("Reminder!", {
+            const notification = new Notification("Reminder!", {
                 body: `Your code: ${randomCode}`,
                 icon: "https://via.placeholder.com/150"  // Замените на URL вашего изображения
             });
+
+            // Обработка нажатия на уведомление
+            notification.onclick = () => {
+                window.open(`https://your-site.com?code=${encodeURIComponent(randomCode)}`, '_blank');
+                copyToClipboard(randomCode, codes.indexOf(randomCode));
+            };
         }
 
         // Устанавливаем случайный интервал для отправки уведомлений
