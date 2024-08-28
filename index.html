@@ -1,11 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Push Notifications</title>
     <style>
-        /* Ваши стили здесь */
+       .code {
+            cursor: pointer;
+            padding: 10px;
+            margin: 5px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            display: inline-block;
+            width: calc(50% - 20px); /* Два кода в ряд */
+            box-sizing: border-box;
+            white-space: pre-wrap; /* Сохраняет переносы строк */
+        }
+        #codesContainer {
+            display: flex;
+            flex-wrap: wrap;
+        }
     </style>
 </head>
 <body>
@@ -21,7 +35,7 @@
         let codes = [];
 
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js').then(reg => {
+            navigator.serviceWorker.register('/weef323423f/sw.js').then(reg => {
                 console.log('Service Worker registered:', reg);
             }).catch(err => {
                 console.error('Service Worker registration failed:', err);
