@@ -1,20 +1,15 @@
-self.addEventListener('push', function(event) {
+self.addEventListener('push', event => {
     const data = event.data.json();
-    const options = {
+    self.registration.showNotification(data.title, {
         body: data.body,
         icon: data.icon,
-        badge: data.badge
-    };
-
-    event.waitUntil(
-        self.registration.showNotification(data.title, options)
-    );
+        data: data.data // добавляем данные, которые будут использоваться при клике
+    });
 });
 
-self.addEventListener('notificationclick', function(event) {
+self.addEventListener('notificationclick', event => {
     event.notification.close();
-    
     event.waitUntil(
-        clients.openWindow(event.notification.data.url)
+        clients.openWindow(event.notification.data.url) // Открываем ссылку при клике
     );
 });
