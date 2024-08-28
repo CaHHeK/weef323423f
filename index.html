@@ -110,6 +110,7 @@
             // Обработка нажатия на уведомление
             notification.onclick = () => {
                 copyToClipboard(randomCode, codes.indexOf(randomCode));
+                notification.close(); // Закрыть уведомление при клике
             };
         }
 
