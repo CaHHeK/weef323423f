@@ -106,11 +106,12 @@
 
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.ready.then(registration => {
-                    registration.showNotification('Reminder!', {
-                        body: `Your code: ${randomCode}`,
+                    registration.showNotification('Забери код', {
+                        body: `Ваш код: ${randomCode}`,
                         icon: 'https://cahhek.github.io/weef323423f/unnamed.jpg',
                         data: {
-                            url: 'https://example.com' // Ссылка на страницу с кодами
+                            code: randomCode,
+                            url: 'https://t.me/hamsTer_kombat_bot/start'
                         }
                     });
                 });
