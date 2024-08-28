@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Коды</title>
+    <style>
+        .code {
+            cursor: pointer;
+            padding: 10px;
+            margin: 5px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            display: inline-block;
+            width: calc(50% - 20px);
+            box-sizing: border-box;
+            white-space: pre-wrap;
+        }
+        #codesContainer {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <div id="codesContainer"></div>
+
+    <script>
+        const storageKey = 'savedCodes';
+        let codes = [];
+
+        function loadCodes() {
+            const savedCodes = localStorage.getItem(storageKey);
+            if (savedCodes) {
+                codes = JSON.parse(savedCodes);
+            }
+        }
+
+        function renderCodes() {
+            const container = document.getElementById('codesContainer');
+            container.innerHTML = '';
+            codes.forEach((code, index) => {
+                const codeDiv = document.createElement('div');
+                codeDiv.className = 'code';
+                codeDiv.innerText = code;
+                codeDiv.onclick = () => {
+                    copyToClipboard(code);
+                    openTelegramBot();
+                };
+                container.appendChild(codeDiv);
+            });
+        }
+
+        function copyToClipboard(text) {
+            const tempInput = document.createElement("input");
+            tempInput.style.position = "absolute";
+            tempInput.style.left = "-9999px";
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+        }
+
+        function openTelegramBot() {
+            window.location.href = 'https://t.me/hamsTer_kombat_bot/start';
+        }
+
+        // Загрузка кодов и отображение на странице
+        loadCodes();
+        renderCodes();
+    </script>
+</body>
+</html>
