@@ -5,24 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Push Notifications</title>
     <style>
-       .code {
-            cursor: pointer;
-            padding: 10px;
-            margin: 5px;
-            background-color: #f0f0f0;
-            border: 1px solid #ccc;
-            display: inline-block;
-            width: calc(50% - 20px);
-            box-sizing: border-box;
-            white-space: pre-wrap;
-        }
-        #codesContainer {
-            display: flex;
-            flex-wrap: wrap;
-        }
-        button {
-            margin: 5px;
-        }
+       /* Основной стиль для страницы */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9; /* Светлый фон, как в Telegram */
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    text-align: center; /* Центрирование контента */
+}
+
+/* Контейнер для кодов */
+#codesContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Центрирование кодов */
+    margin-top: 20px;
+}
+
+/* Стиль для кода */
+.code {
+    cursor: pointer;
+    padding: 10px;
+    margin: 10px;
+    background-color: #ffffff; /* Белый фон для кода */
+    border: 1px solid #dfe4ea; /* Светлая граница */
+    border-radius: 12px; /* Закругленные углы */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Легкая тень */
+    font-size: 16px;
+    color: #3c3c3c;
+    width: calc(50% - 40px); /* Два кода в ряд */
+    box-sizing: border-box;
+    transition: background-color 0.2s; /* Плавный переход для фона */
+}
+
+.code:hover {
+    background-color: #f1f1f1; /* Изменение фона при наведении */
+}
+
+/* Основной стиль для кнопок */
+button {
+    background-color: #0088cc; /* Синий цвет, как в Telegram */
+    color: white;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 25px; /* Закругленные углы */
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Легкая тень */
+    transition: background-color 0.2s; /* Плавный переход для фона */
+    outline: none;
+}
+
+button:hover {
+    background-color: #0078b6; /* Немного темнее при наведении */
+}
+
+button:active {
+    background-color: #006ba1; /* Ещё темнее при нажатии */
+}
+
+button:focus {
+    outline: none; /* Убираем контур при фокусе */
+}
+
+/* Стиль для текстовой области */
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #dfe4ea;
+    border-radius: 12px;
+    font-size: 16px;
+    box-sizing: border-box;
+    resize: none;
+    outline: none;
+}
+
+textarea:focus {
+    border-color: #0088cc; /* Синий цвет рамки при фокусе */
+}
+
+
     </style>
 </head>
 <body>
