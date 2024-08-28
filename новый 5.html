@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copy Codes on Click</title>
+    <style>
+        .code {
+            cursor: pointer;
+            padding: 10px;
+            margin: 5px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            display: inline-block;
+            width: calc(50% - 20px); /* Two codes per row */
+            box-sizing: border-box;
+            white-space: pre-wrap; /* Keeps line breaks */
+        }
+        #codesContainer {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="codesContainer"></div>
+
+    <textarea id="newCodesInput" placeholder="Enter new codes, one per line" rows="5" cols="30"></textarea>
+    <br>
+    <button onclick="addNewCodes()">Add Codes</button>
+    <button onclick="clearCodes()">Clear Codes</button>
+    <button onclick="sendNotification()">Test Notification</button>
+
+    <script>
+        const storageKey = 'savedCodes';
+        let codes = [];
+
+        function loadCodes() {
+            const savedCodes = localStorage.getItem(storageKey);
+            if (savedCodes) {
+                codes = JSON.parse(savedCodes);
+            }
+        }
+
+        function saveCodes() {
+            localStorage.setItem(storageKey, JSON.stringify(codes));
+        }
+
+        function renderCodes() {
+            const container = document.getElementById('codesContainer');
+            container.innerHTML = '';
+            codes.forEach((code, index) => {
+                const codeDiv = document.createElement('div');
+                codeDiv.className = 'code';
+                codeDiv.innerText = code;
+                codeDiv.onclick = () => copyToClipboard(code, index);
+                container.appendChild(codeDiv);
+            });
+        }
+
+        function addNewCodes() {
+            const newCodes = document.getElementById('newCodesInput').value.split('\n');
+            newCodes.forEach(code => {
+                code = code.trim();
+                if (code) {
+                    codes.push(code);
+                }
+            });
+            saveCodes();
+            renderCodes();
+            document.getElementById('newCodesInput').value = '';  // Clear the textarea after adding codes
+        }
+
+        function clearCodes() {
+            codes = [];
+            saveCodes();
+            renderCodes();
+        }
+
+        function copyToClipboard(text, index) {
+            const tempInput = document.createElement("input");
+            tempInput.style.position = "absolute";
+            tempInput.style.left = "-9999px";
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            // Remove the copied code from the array
+            codes.splice(index, 1);
+            saveCodes();
+            renderCodes();
+        }
+
+        // Функция для отправки уведомления
+        function sendNotification() {
+            if (codes.length === 0) return;
+
+            // Получаем случайный код из массива
+            const randomCode = codes[Math.floor(Math.random() * codes.length)];
+
+            // Создание и отправка уведомления
+            new Notification("Reminder!", {
+                body: `Your code: ${randomCode}`,
+                icon: "https://via.placeholder.com/150"  // Замените на URL вашего изображения
+            });
+        }
+
+        // Устанавливаем случайный интервал для отправки уведомлений
+        function scheduleNextNotification() {
+            const min = 15 * 1000; // 15 секунд
+            const max = 30 * 1000; // 30 секунд
+            const timeout = Math.floor(Math.random() * (max - min + 1)) + min;
+
+            setTimeout(() => {
+                sendNotification();
+                scheduleNextNotification();
+            }, timeout);
+        }
+
+        // Проверка разрешения и запуск уведомлений
+        if ("Notification" in window) {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    scheduleNextNotification();
+                }
+            });
+        }
+
+        // Initial load of codes from localStorage
+        loadCodes();
+        renderCodes();
+    </script>
+
+</body>
+</html>
