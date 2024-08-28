@@ -97,18 +97,10 @@ textarea:focus {
     <button onclick="addNewCodes()">Добавить коды</button>
     <button onclick="clearCodes()">Очистить коды</button>
     <button onclick="sendNotification()">Тест уведомления</button>
-    <br>
-    <button onclick="enableNotifications()">Включить уведомления</button>
-    <button onclick="disableNotifications('1 час')">Выключить на 1 час</button>
-    <button onclick="disableNotifications('6 часов')">Выключить на 6 часов</button>
-    <button onclick="disableNotifications('всегда')">Выключить на всегда</button>
 
     <script>
         const storageKey = 'savedCodes';
-        const notificationCountKey = 'notificationCount';
-        const lastNotificationTimeKey = 'lastNotificationTime';
         let codes = [];
-        let notificationInterval;
 
         // Регистрация Service Worker
         if ('serviceWorker' in navigator) {
@@ -171,10 +163,8 @@ textarea:focus {
             copyToClipboard(code);
             codes.splice(index, 1);  // Удаление кода из массива
             saveCodes();  // Сохранение обновленного массива
-            setTimeout(() => {
-                openTelegramBot();  // Открытие Telegram-бота
-                window.close();  // Закрытие текущего окна после открытия бота
-            }, 5000);  // Задержка в 500 мс перед закрытием
+            renderCodes();  // Перерисовка кодов
+            openTelegramBot();  // Открытие Telegram-бота
         }
 
         // Копирование текста в буфер обмена
@@ -198,21 +188,6 @@ textarea:focus {
         function sendNotification() {
             if (codes.length === 0) return;
 
-            const lastNotificationTime = localStorage.getItem(lastNotificationTimeKey);
-            const notificationCount = localStorage.getItem(notificationCountKey) || 0;
-
-            // Проверка на количество уведомлений
-            if (notificationCount >= 6) {
-                const elapsedTime = Date.now() - lastNotificationTime;
-                if (elapsedTime < 2 * 60 * 60 * 1000) { // Меньше 2 часов
-                    console.log('Превышен лимит уведомлений.');
-                    return;
-                } else {
-                    localStorage.setItem(notificationCountKey, 0); // Сбросить счетчик
-                }
-            }
-
-            // Отправка уведомления
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.ready.then(registration => {
                     registration.showNotification('Забери код', {
@@ -223,45 +198,7 @@ textarea:focus {
                         }
                     });
                 });
-
-                // Обновление времени и счетчика уведомлений
-                localStorage.setItem(lastNotificationTimeKey, Date.now());
-                localStorage.setItem(notificationCountKey, parseInt(notificationCount) + 1);
             }
-        }
-
-        // Включение уведомлений
-        function enableNotifications() {
-            if ("Notification" in window) {
-                Notification.requestPermission().then(permission => {
-                    if (permission === "granted") {
-                        scheduleNextNotification();
-                    }
-                });
-            }
-        }
-
-        // Отключение уведомлений на заданное время
-        function disableNotifications(duration) {
-            clearInterval(notificationInterval);
-            let timeout;
-
-            switch (duration) {
-                case '1 час':
-                    timeout = 1 * 60 * 60 * 1000; // 1 час
-                    break;
-                case '6 часов':
-                    timeout = 6 * 60 * 60 * 1000; // 6 часов
-                    break;
-                case 'всегда':
-                    return; // Полное отключение без повторного включения
-                default:
-                    timeout = 0;
-            }
-
-            setTimeout(() => {
-                enableNotifications();
-            }, timeout);
         }
 
         // Установка случайного интервала для уведомлений
@@ -270,9 +207,19 @@ textarea:focus {
             const max = 30 * 1000; // 30 секунд
             const timeout = Math.floor(Math.random() * (max - min + 1)) + min;
 
-            notificationInterval = setInterval(() => {
+            setTimeout(() => {
                 sendNotification();
+                scheduleNextNotification();
             }, timeout);
+        }
+
+        // Проверка разрешения на уведомления и запуск расписания
+        if ("Notification" in window) {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    scheduleNextNotification();
+                }
+            });
         }
 
         // Загрузка и отображение кодов при загрузке страницы
