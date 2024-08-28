@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,9 +12,9 @@
             background-color: #f0f0f0;
             border: 1px solid #ccc;
             display: inline-block;
-            width: calc(50% - 20px); /* Two codes per row */
+            width: calc(50% - 20px); /* Два кода в ряд */
             box-sizing: border-box;
-            white-space: pre-wrap; /* Keeps line breaks */
+            white-space: pre-wrap; /* Сохраняет переносы строк */
         }
         #codesContainer {
             display: flex;
@@ -69,7 +69,7 @@
             });
             saveCodes();
             renderCodes();
-            document.getElementById('newCodesInput').value = '';  // Clear the textarea after adding codes
+            document.getElementById('newCodesInput').value = '';  // Очистить textarea после добавления кодов
         }
 
         function clearCodes() {
@@ -88,7 +88,7 @@
             document.execCommand("copy");
             document.body.removeChild(tempInput);
 
-            // Remove the copied code from the array
+            // Удаляем скопированный код из массива
             codes.splice(index, 1);
             saveCodes();
             renderCodes();
@@ -109,7 +109,6 @@
 
             // Обработка нажатия на уведомление
             notification.onclick = () => {
-                window.open(`https://cahhek.github.io/weef323423f/?code=${encodeURIComponent(randomCode)}`, '_blank');
                 copyToClipboard(randomCode, codes.indexOf(randomCode));
             };
         }
