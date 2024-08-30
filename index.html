@@ -5,87 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Push Notifications</title>
     <style>
-        /* Основной стиль для страницы */
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f9f9f9;
-            color: #333;
-            margin: 0;
-            padding: 20px;
-            text-align: center;
-        }
+       /* Основной стиль для страницы */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9; /* Светлый фон, как в Telegram */
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    text-align: center; /* Центрирование контента */
+}
 
-        /* Контейнер для кодов */
-        #codesContainer {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 20px;
-        }
+/* Контейнер для кодов */
+#codesContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Центрирование кодов */
+    margin-top: 20px;
+}
 
-        /* Стиль для кода */
-        .code {
-            cursor: pointer;
-            padding: 10px;
-            margin: 10px;
-            background-color: #ffffff;
-            border: 1px solid #dfe4ea;
-            border-radius: 12px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            font-size: 16px;
-            color: #3c3c3c;
-            width: calc(50% - 40px);
-            box-sizing: border-box;
-            transition: background-color 0.2s;
-        }
+/* Стиль для кода */
+.code {
+    cursor: pointer;
+    padding: 10px;
+    margin: 10px;
+    background-color: #ffffff; /* Белый фон для кода */
+    border: 1px solid #dfe4ea; /* Светлая граница */
+    border-radius: 12px; /* Закругленные углы */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Легкая тень */
+    font-size: 16px;
+    color: #3c3c3c;
+    width: calc(50% - 40px); /* Два кода в ряд */
+    box-sizing: border-box;
+    transition: background-color 0.2s; /* Плавный переход для фона */
+}
 
-        .code:hover {
-            background-color: #f1f1f1;
-        }
+.code:hover {
+    background-color: #f1f1f1; /* Изменение фона при наведении */
+}
 
-        /* Основной стиль для кнопок */
-        button {
-            background-color: #0088cc;
-            color: white;
-            padding: 10px 20px;
-            margin: 10px;
-            border: none;
-            border-radius: 25px;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.2s;
-            outline: none;
-        }
+/* Основной стиль для кнопок */
+button {
+    background-color: #0088cc; /* Синий цвет, как в Telegram */
+    color: white;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 25px; /* Закругленные углы */
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Легкая тень */
+    transition: background-color 0.2s; /* Плавный переход для фона */
+    outline: none;
+}
 
-        button:hover {
-            background-color: #0078b6;
-        }
+button:hover {
+    background-color: #0078b6; /* Немного темнее при наведении */
+}
 
-        button:active {
-            background-color: #006ba1;
-        }
+button:active {
+    background-color: #006ba1; /* Ещё темнее при нажатии */
+}
 
-        button:focus {
-            outline: none;
-        }
+button:focus {
+    outline: none; /* Убираем контур при фокусе */
+}
 
-        /* Стиль для текстовой области */
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #dfe4ea;
-            border-radius: 12px;
-            font-size: 16px;
-            box-sizing: border-box;
-            resize: none;
-            outline: none;
-        }
+/* Стиль для текстовой области */
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #dfe4ea;
+    border-radius: 12px;
+    font-size: 16px;
+    box-sizing: border-box;
+    resize: none;
+    outline: none;
+}
 
-        textarea:focus {
-            border-color: #0088cc;
-        }
+textarea:focus {
+    border-color: #0088cc; /* Синий цвет рамки при фокусе */
+}
+
+
     </style>
 </head>
 <body>
@@ -95,19 +97,10 @@
     <button onclick="addNewCodes()">Добавить коды</button>
     <button onclick="clearCodes()">Очистить коды</button>
     <button onclick="sendNotification()">Тест уведомления</button>
-    <br>
-    <button onclick="enableNotifications('always')">Включить уведомления (Всегда)</button>
-    <button onclick="enableNotifications('1h')">Включить уведомления (1 час)</button>
-    <button onclick="enableNotifications('6h')">Включить уведомления (6 часов)</button>
-    <button onclick="disableNotifications()">Выключить уведомления</button>
 
     <script>
         const storageKey = 'savedCodes';
         let codes = [];
-        let notificationsEnabled = false;
-        let notificationLimit = 6; // Лимит уведомлений за 2 часа
-        let sentNotifications = 0; // Счетчик отправленных уведомлений
-        let notificationTimeout; // Переменная для хранения таймера уведомлений
 
         // Регистрация Service Worker
         if ('serviceWorker' in navigator) {
@@ -188,13 +181,12 @@
 
         // Открытие Telegram-бота
         function openTelegramBot() {
-            window.open('https://t.me/hamsTer_kombat_bot/start', '');
-            window.close();
+            window.location.href = 'https://t.me/hamsTer_kombat_bot/start';
         }
 
         // Отправка тестового уведомления
         function sendNotification() {
-            if (codes.length === 0 || !notificationsEnabled || sentNotifications >= notificationLimit) return;
+            if (codes.length === 0) return;
 
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.ready.then(registration => {
@@ -205,63 +197,35 @@
                             url: 'https://cahhek.github.io/weef323423f/'  // URL главной страницы
                         }
                     });
-                    sentNotifications++; // Увеличение счетчика отправленных уведомлений
                 });
             }
         }
 
-        // Генерация случайного интервала уведомлений
-        function getRandomInterval() {
-            const min = 45 * 60 * 1000; // 45 минут
-            const max = 90 * 60 * 1000; // 90 минут
-            return Math.floor(Math.random() * (max - min + 1)) + min;
+        // Установка случайного интервала для уведомлений
+        function scheduleNextNotification() {
+            const min = 15 * 1000; // 15 секунд
+            const max = 30 * 1000; // 30 секунд
+            const timeout = Math.floor(Math.random() * (max - min + 1)) + min;
+
+            setTimeout(() => {
+                sendNotification();
+                scheduleNextNotification();
+            }, timeout);
         }
 
-        // Включение уведомлений
-        function enableNotifications(duration) {
-            notificationsEnabled = true;
-            sentNotifications = 0; // Сброс счетчика отправленных уведомлений
-
-            function scheduleNextNotification() {
-                const interval = getRandomInterval();
-                notificationTimeout = setTimeout(() => {
-                    sendNotification();
-                    if (notificationsEnabled && sentNotifications < notificationLimit) {
-                        scheduleNextNotification();
-                    }
-                }, interval);
-            }
-
-            scheduleNextNotification();
-
-            let delay;
-            switch (duration) {
-                case '1h':
-                    delay = 60 * 60 * 1000; // 1 час
-                    break;
-                case '6h':
-                    delay = 6 * 60 * 1000; // 6 часов
-                    break;
-                case 'always':
-                    delay = Infinity; // Бесконечно
-                    break;
-            }
-
-            if (duration !== 'always') {
-                setTimeout(disableNotifications, delay); // Выключение уведомлений через указанный интервал
-            }
-        }
-
-        // Выключение уведомлений
-        function disableNotifications() {
-            notificationsEnabled = false;
-            clearTimeout(notificationTimeout);
-            console.log('Уведомления выключены');
+        // Проверка разрешения на уведомления и запуск расписания
+        if ("Notification" in window) {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    scheduleNextNotification();
+                }
+            });
         }
 
         // Загрузка и отображение кодов при загрузке страницы
         loadCodes();
         renderCodes();
     </script>
+
 </body>
 </html>
