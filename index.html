@@ -5,89 +5,87 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Push Notifications</title>
     <style>
-       /* Основной стиль для страницы */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f9f9f9; /* Светлый фон, как в Telegram */
-    color: #333;
-    margin: 0;
-    padding: 20px;
-    text-align: center; /* Центрирование контента */
-}
+        /* Основной стиль для страницы */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9; /* Светлый фон, как в Telegram */
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            text-align: center; /* Центрирование контента */
+        }
 
-/* Контейнер для кодов */
-#codesContainer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center; /* Центрирование кодов */
-    margin-top: 20px;
-}
+        /* Контейнер для кодов */
+        #codesContainer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* Центрирование кодов */
+            margin-top: 20px;
+        }
 
-/* Стиль для кода */
-.code {
-    cursor: pointer;
-    padding: 10px;
-    margin: 10px;
-    background-color: #ffffff; /* Белый фон для кода */
-    border: 1px solid #dfe4ea; /* Светлая граница */
-    border-radius: 12px; /* Закругленные углы */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Легкая тень */
-    font-size: 16px;
-    color: #3c3c3c;
-    width: calc(50% - 40px); /* Два кода в ряд */
-    box-sizing: border-box;
-    transition: background-color 0.2s; /* Плавный переход для фона */
-}
+        /* Стиль для кода */
+        .code {
+            cursor: pointer;
+            padding: 10px;
+            margin: 10px;
+            background-color: #ffffff; /* Белый фон для кода */
+            border: 1px solid #dfe4ea; /* Светлая граница */
+            border-radius: 12px; /* Закругленные углы */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Легкая тень */
+            font-size: 16px;
+            color: #3c3c3c;
+            width: calc(50% - 40px); /* Два кода в ряд */
+            box-sizing: border-box;
+            transition: background-color 0.2s; /* Плавный переход для фона */
+        }
 
-.code:hover {
-    background-color: #f1f1f1; /* Изменение фона при наведении */
-}
+        .code:hover {
+            background-color: #f1f1f1; /* Изменение фона при наведении */
+        }
 
-/* Основной стиль для кнопок */
-button {
-    background-color: #0088cc; /* Синий цвет, как в Telegram */
-    color: white;
-    padding: 10px 20px;
-    margin: 10px;
-    border: none;
-    border-radius: 25px; /* Закругленные углы */
-    font-size: 16px;
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Легкая тень */
-    transition: background-color 0.2s; /* Плавный переход для фона */
-    outline: none;
-}
+        /* Основной стиль для кнопок */
+        button {
+            background-color: #0088cc; /* Синий цвет, как в Telegram */
+            color: white;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 25px; /* Закругленные углы */
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Легкая тень */
+            transition: background-color 0.2s; /* Плавный переход для фона */
+            outline: none;
+        }
 
-button:hover {
-    background-color: #0078b6; /* Немного темнее при наведении */
-}
+        button:hover {
+            background-color: #0078b6; /* Немного темнее при наведении */
+        }
 
-button:active {
-    background-color: #006ba1; /* Ещё темнее при нажатии */
-}
+        button:active {
+            background-color: #006ba1; /* Ещё темнее при нажатии */
+        }
 
-button:focus {
-    outline: none; /* Убираем контур при фокусе */
-}
+        button:focus {
+            outline: none; /* Убираем контур при фокусе */
+        }
 
-/* Стиль для текстовой области */
-textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #dfe4ea;
-    border-radius: 12px;
-    font-size: 16px;
-    box-sizing: border-box;
-    resize: none;
-    outline: none;
-}
+        /* Стиль для текстовой области */
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #dfe4ea;
+            border-radius: 12px;
+            font-size: 16px;
+            box-sizing: border-box;
+            resize: none;
+            outline: none;
+        }
 
-textarea:focus {
-    border-color: #0088cc; /* Синий цвет рамки при фокусе */
-}
-
-
+        textarea:focus {
+            border-color: #0088cc; /* Синий цвет рамки при фокусе */
+        }
     </style>
 </head>
 <body>
@@ -105,6 +103,8 @@ textarea:focus {
     <label for="maxInterval">Максимальный интервал (мин):</label>
     <input type="number" id="maxInterval" value="45" step="0.5" min="0.5">
     <br><br>
+    <!-- Кнопка Применить -->
+    <button onclick="applySettings()">Применить</button>
 
     <script>
         const storageKey = 'savedCodes';
@@ -211,8 +211,8 @@ textarea:focus {
 
         // Установка случайного интервала для уведомлений
         function scheduleNextNotification() {
-            const minInterval = parseFloat(document.getElementById('minInterval').value) * 60 * 1000; // минимальный интервал в мс
-            const maxInterval = parseFloat(document.getElementById('maxInterval').value) * 60 * 1000; // максимальный интервал в мс
+            const minInterval = parseFloat(localStorage.getItem('minInterval')) * 60 * 1000 || 20 * 60 * 1000;
+            const maxInterval = parseFloat(localStorage.getItem('maxInterval')) * 60 * 1000 || 45 * 60 * 1000;
 
             const timeout = Math.floor(Math.random() * (maxInterval - minInterval + 1)) + minInterval;
 
@@ -220,6 +220,15 @@ textarea:focus {
                 sendNotification();
                 scheduleNextNotification();
             }, timeout);
+        }
+
+        // Функция для сохранения настроек и перезагрузки страницы
+        function applySettings() {
+            const minInterval = parseFloat(document.getElementById('minInterval').value);
+            const maxInterval = parseFloat(document.getElementById('maxInterval').value);
+            localStorage.setItem('minInterval', minInterval);
+            localStorage.setItem('maxInterval', maxInterval);
+            location.reload(); // Перезагрузка страницы
         }
 
         // Проверка разрешения на уведомления и запуск расписания
