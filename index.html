@@ -203,8 +203,8 @@ textarea:focus {
 
         // Установка случайного интервала для уведомлений
         function scheduleNextNotification() {
-            const min = 15 * 1000; // 15 секунд
-            const max = 30 * 1000; // 30 секунд
+            const min = 45 * 60 * 1000; // 45 минут
+            const max = 90 * 60 * 1000; // 90 мину
             const timeout = Math.floor(Math.random() * (max - min + 1)) + min;
 
             setTimeout(() => {
