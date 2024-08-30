@@ -86,6 +86,30 @@
         textarea:focus {
             border-color: #0088cc; /* Синий цвет рамки при фокусе */
         }
+
+        /* Стили для полей ввода интервалов */
+        .interval-input {
+            width: 80px;
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #dfe4ea;
+            border-radius: 25px;
+            font-size: 16px;
+            text-align: center;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s; /* Плавный переход для рамки */
+        }
+
+        .interval-input:focus {
+            border-color: #0088cc; /* Синий цвет рамки при фокусе */
+        }
+
+        .interval-label {
+            font-size: 16px;
+            color: #333;
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -98,10 +122,10 @@
     
     <br><br>
     <!-- Интервалы времени -->
-    <label for="minInterval">Минимальный интервал (мин):</label>
-    <input type="number" id="minInterval" value="20" step="0.5" min="0.5">
-    <label for="maxInterval">Максимальный интервал (мин):</label>
-    <input type="number" id="maxInterval" value="45" step="0.5" min="0.5">
+    <label class="interval-label" for="minInterval">Минимальный интервал (мин):</label>
+    <input type="number" id="minInterval" class="interval-input" step="0.5" min="0.5">
+    <label class="interval-label" for="maxInterval">Максимальный интервал (мин):</label>
+    <input type="number" id="maxInterval" class="interval-input" step="0.5" min="0.5">
     <br><br>
     <!-- Кнопка Применить -->
     <button onclick="applySettings()">Применить</button>
@@ -125,6 +149,12 @@
             if (savedCodes) {
                 codes = JSON.parse(savedCodes);
             }
+
+            // Загрузка интервалов из localStorage
+            const minInterval = localStorage.getItem('minInterval') || 20;
+            const maxInterval = localStorage.getItem('maxInterval') || 45;
+            document.getElementById('minInterval').value = minInterval;
+            document.getElementById('maxInterval').value = maxInterval;
         }
 
         // Сохранение кодов в localStorage
@@ -213,7 +243,6 @@
         function scheduleNextNotification() {
             const minInterval = parseFloat(localStorage.getItem('minInterval')) * 60 * 1000 || 20 * 60 * 1000;
             const maxInterval = parseFloat(localStorage.getItem('maxInterval')) * 60 * 1000 || 45 * 60 * 1000;
-
             const timeout = Math.floor(Math.random() * (maxInterval - minInterval + 1)) + minInterval;
 
             setTimeout(() => {
@@ -222,13 +251,15 @@
             }, timeout);
         }
 
-        // Функция для сохранения настроек и перезагрузки страницы
+        // Применение новых настроек
         function applySettings() {
-            const minInterval = parseFloat(document.getElementById('minInterval').value);
-            const maxInterval = parseFloat(document.getElementById('maxInterval').value);
+            const minInterval = document.getElementById('minInterval').value;
+            const maxInterval = document.getElementById('maxInterval').value;
+
             localStorage.setItem('minInterval', minInterval);
             localStorage.setItem('maxInterval', maxInterval);
-            location.reload(); // Перезагрузка страницы
+
+            location.reload(); // Перезагрузка страницы после применения настроек
         }
 
         // Проверка разрешения на уведомления и запуск расписания
